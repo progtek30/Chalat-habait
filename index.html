@@ -1,1 +1,108 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>chack http</title>
 
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 20px;
+      background: #11111b;
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      text-align: center;
+      color: #00e5ff;
+    }
+
+    #status {
+      text-align: center;
+      margin: 18px 0;
+      font-size: 20px;
+      color: #ffca28;
+    }
+
+    #result {
+      width: 100%;
+      min-height: 400px;
+      max-height: 80vh;
+      overflow: auto;
+      padding: 20px;
+      background: #050509;
+      color: #00ff9c;
+      border: 2px solid #393952;
+      border-radius: 12px;
+      direction: ltr;
+      text-align: left;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      font: 15px/1.6 monospace;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>hafrasha chalat habait</h1>
+
+    <div id="status">please wait...</div>
+
+    <pre id="result">ממתין לתשובת השרת...</pre>
+  </div>
+
+  <script>
+    const url =
+      "https://ask.macrodroid.com/ad0b2a0c-f76c-4083-a716-41d5e1ed58c0/hafrasha";
+
+    const status = document.getElementById("status");
+    const result = document.getElementById("result");
+
+    async function sendRequest() {
+      status.textContent = "";
+      result.textContent = "please wait...";
+
+      try {
+        const response = await fetch(url, {
+          method: "GET",
+          cache: "no-store"
+        });
+
+        const text = await response.text();
+
+        result.textContent =
+          "" +
+          "" + " " + "" +
+          "\n\n" + text;
+
+        status.textContent = response.ok
+          ? ""
+          : "";
+
+      } catch (error) {
+        result.textContent =
+          "שגיאה בקבלת התשובה:\n" +
+          error.message +
+          "\n\nייתכן שהשרת חסם את הבקשה באמצעות CORS.";
+
+        status.textContent = "הבקשה נכשלה";
+      }
+    }
+
+    // שליחת הבקשה אוטומטית עם טעינת הדף
+    window.addEventListener("DOMContentLoaded", sendRequest);
+  </script>
+</body>
+</html>
